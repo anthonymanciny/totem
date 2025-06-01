@@ -1,10 +1,9 @@
 CREATE TABLE `tbl_matricula` (
-  `idMatricula` INT NOT NULL AUTO_INCREMENT COMMENT 'Identificador da matrícula',
-  `idUsuario` INT NOT NULL COMMENT 'Referência ao estudante',
-  `idCurso` INT NOT NULL COMMENT 'Referência ao curso',
-  `dataMatricula` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Data da matrícula',
+  `idMatricula` INT NOT NULL AUTO_INCREMENT COMMENT 'Identificador numérico da matrícula',
+  `idAluno` INT NOT NULL COMMENT 'Referência ao aluno matriculado',
+  `idCurso` INT NOT NULL COMMENT 'Referência ao curso matriculado',
+  `statusMatricula` ENUM('Ativo', 'Inativo', 'Cancelado') NOT NULL COMMENT 'Status da matrícula',
   PRIMARY KEY (`idMatricula`),
-  UNIQUE KEY `UN_usuario_curso` (`idUsuario`, `idCurso`),
-  CONSTRAINT `fk_matricula_usuario` FOREIGN KEY (`idUsuario`) REFERENCES `tbl_usuario` (`idUsuario`) ON DELETE CASCADE,
-  CONSTRAINT `fk_matricula_curso` FOREIGN KEY (`idCurso`) REFERENCES `tbl_curso` (`idCurso`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Registra as matrículas dos usuários nos cursos';
+  CONSTRAINT `fk_matricula_aluno` FOREIGN KEY (`idAluno`) REFERENCES `tbl_aluno` (`idAluno`),
+  CONSTRAINT `fk_matricula_curso` FOREIGN KEY (`idCurso`) REFERENCES `tbl_curso` (`idCurso`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Tabela de matrículas dos alunos nos cursos';
