@@ -1,5 +1,7 @@
 export interface ICurso {
   idCurso: number;
   nomeCurso: string;
-  descricaoCurso: string | undefined;
+  periodoCurso: string;
+  turnoCurso: string;
+  statusCurso: 'Ativo' | 'Inativo';
 }
