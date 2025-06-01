@@ -3,7 +3,7 @@ export interface IAluno {
   nomeAluno: string;
   cpfAluno: string;
   emailAluno: string;
-  senhaHash: string;
+  senhaAluno: string;
   biometriaID?: string;
   statusAtivo: 'Ativo' | 'Inativo';
 }

@@ -6,7 +6,7 @@ export class AlunoModel extends Model {
   private _nomeAluno!: string;
   private _cpfAluno!: string;
   private _emailAluno!: string;
-  private _senhaHash!: string;
+  private _senhaAluno!: string;
   private _biometriaID!: string | null;
   private _statusAtivo!: 'Ativo' | 'Inativo';
 
@@ -42,12 +42,12 @@ export class AlunoModel extends Model {
     this._emailAluno = value;
   }
 
-  get senhaHash(): string {
-    return this._senhaHash;
+  get senhaAluno(): string {
+    return this._senhaAluno;
   }
 
-  set senhaHash(value: string) {
-    this._senhaHash = value;
+  set senhaAluno(value: string) {
+    this._senhaAluno = value;
   }
 
   get biometriaID(): string | null {
@@ -92,7 +92,7 @@ AlunoModel.init(
       unique: true,
       comment: 'E-mail do aluno',
     },
-    senhaHash: {
+    senhaAluno: {
       type: DataTypes.STRING(255),
       allowNull: false,
       comment: 'Senha em hash do aluno',

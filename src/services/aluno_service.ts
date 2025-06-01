@@ -9,7 +9,7 @@ export class AlunoService {
             await AlunoModel.create({
                 nomeAluno: novo_item.nomeAluno,
                 emailAluno: novo_item.emailAluno,
-                senhaHash: novo_item.senhaHash
+                senhaAluno: novo_item.senhaAluno
             });
         } catch (erro: any) {
             throw new Error(`Erro ao tentar incluir um novo aluno [${erro.message}]`);
@@ -39,7 +39,7 @@ export class AlunoService {
             const aluno = await this.buscar(id);
             aluno.nomeAluno = item.nomeAluno;
             aluno.emailAluno = item.emailAluno;
-            aluno.senhaHash = item.senhaHash;
+            aluno.senhaAluno = item.senhaAluno;
             await aluno.save();
         } catch (erro: any) {
             throw new Error(`Erro ao alterar aluno com id ${id} [${erro.message}]`);

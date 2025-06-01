@@ -17,10 +17,10 @@ export const getCursoInfo = async (req: Request, res: Response, next: NextFuncti
   try {
     // Verifica o token
     const decoded = jwt.verify(token, JWT_SECRET) as jwt.JwtPayload;
-    const idUsuario = decoded.idUsuario;  // Corrigido: agora estamos pegando o `idUsuario` de `decoded`
+    const idAluno = decoded.idAluno;  // Corrigido: agora estamos pegando o `idAluno` de `decoded`
 
     // Busca o usuário no banco de dados
-    const Cursos = await MatriculaModel.findAll({ where: { idUsuario } });
+    const Cursos = await MatriculaModel.findAll({ where: { idAluno } });
     if (!Cursos) {
     res.status(400).json({ message: 'Usuário não encontrado.' });
     }

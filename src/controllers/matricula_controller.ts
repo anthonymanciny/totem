@@ -1,7 +1,5 @@
 import { Request, Response } from 'express';
-import { MatriculaService } from '../services/matricula_service';
-import { MatriculaModel } from '../models/matricula_model';
-import { CursoModel } from '../models/curso_model';
+import { MatriculaService } from '../services/matriculas_service';
 
 export class MatriculaController {
   private matriculaService: MatriculaService;
@@ -10,46 +8,26 @@ export class MatriculaController {
     this.matriculaService = new MatriculaService();
   }
 
-  // public async criar(req: Request, res: Response): Promise<void> {
-  //   if (Object.keys(req.body).length === 0) {
-  //     res.status(400).json({ message: 'O corpo da requisição está vazio' });
-  //     return;
-  //   }
+  public async criar(req: Request, res: Response): Promise<void> {
+    const dados = req.body;
 
-  //   try {
-  //     await this.matriculaService.criar(req.body);
-  //     res.status(201).json({ message: 'Matrícula criada com sucesso' });
-  //   } catch (erro: any) {
-  //     res.status(500).json({ message: erro.message });
-  //   }
-  // }
-
-  // 
-
-public async criar(req: Request, res: Response): Promise<void> {
-  const dados = req.body;
-
-  if (!dados || (Array.isArray(dados) && dados.length === 0)) {
-    res.status(400).json({ message: 'O corpo da requisição está vazio' });
-    return;
-  }
-
-  try {
-    if (Array.isArray(dados)) {
-      // Criação em lote (várias matrículas)
-      await Promise.all(dados.map((item) => this.matriculaService.criar(item)));
-      res.status(201).json({ message: 'Matrículas criadas com sucesso' });
-    } else {
-      // Criação única
-      await this.matriculaService.criar(dados);
-      res.status(201).json({ message: 'Matrícula criada com sucesso' });
+    if (!dados || (Array.isArray(dados) && dados.length === 0)) {
+      res.status(400).json({ message: 'O corpo da requisição está vazio' });
+      return;
     }
-  } catch (erro: any) {
-    res.status(500).json({ message: erro.message });
-  }
-}
 
-  // 
+    try {
+      if (Array.isArray(dados)) {
+        await Promise.all(dados.map((item) => this.matriculaService.criar(item)));
+        res.status(201).json({ message: 'Matrículas criadas com sucesso' });
+      } else {
+        await this.matriculaService.criar(dados);
+        res.status(201).json({ message: 'Matrícula criada com sucesso' });
+      }
+    } catch (erro: any) {
+      res.status(500).json({ message: erro.message });
+    }
+  }
 
   public async listar(req: Request, res: Response): Promise<void> {
     try {
@@ -75,21 +53,6 @@ public async criar(req: Request, res: Response): Promise<void> {
       res.status(404).json({ message: erro.message });
     }
   }
-
-  public async listarCursosDoUsuario(req: Request, res: Response): Promise<void> {
-  const usuarioId = (req as any).usuarioId;
-
-  try {
-    const matriculas = await MatriculaModel.findAll({
-      where: { idUsuario: usuarioId },
-       // se quiser os dados do curso
-    });
-
-    res.status(200).json(matriculas);
-  } catch (erro: any) {
-    res.status(500).json({ message: erro.message });
-  }
-}
 
   public async alterar(req: Request, res: Response): Promise<void> {
     const id = parseInt(req.params.id);

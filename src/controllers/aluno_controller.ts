@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
-import { CursoService } from '../services/curso_service';
+import { AlunoService } from '../services/aluno_service';
 
-export class CursoController {
-  private cursoService: CursoService;
+export class AlunoController {
+  private alunoService: AlunoService;
 
   constructor() {
-    this.cursoService = new CursoService();
+    this.alunoService = new AlunoService();
   }
 
   public async criar(req: Request, res: Response): Promise<void> {
@@ -18,11 +18,11 @@ export class CursoController {
 
     try {
       if (Array.isArray(dados)) {
-        await Promise.all(dados.map((curso) => this.cursoService.criar(curso)));
-        res.status(201).json({ message: 'Cursos criados com sucesso' });
+        await Promise.all(dados.map((aluno) => this.alunoService.criar(aluno)));
+        res.status(201).json({ message: 'Alunos criados com sucesso' });
       } else {
-        await this.cursoService.criar(dados);
-        res.status(201).json({ message: 'Curso criado com sucesso' });
+        await this.alunoService.criar(dados);
+        res.status(201).json({ message: 'Aluno criado com sucesso' });
       }
     } catch (erro: any) {
       res.status(500).json({ message: erro.message });
@@ -31,8 +31,8 @@ export class CursoController {
 
   public async listar(req: Request, res: Response): Promise<void> {
     try {
-      const cursos = await this.cursoService.listar();
-      res.status(200).json(cursos);
+      const alunos = await this.alunoService.listar();
+      res.status(200).json(alunos);
     } catch (erro: any) {
       res.status(500).json({ message: erro.message });
     }
@@ -47,8 +47,8 @@ export class CursoController {
     }
 
     try {
-      const curso = await this.cursoService.buscar(id);
-      res.status(200).json(curso);
+      const aluno = await this.alunoService.buscar(id);
+      res.status(200).json(aluno);
     } catch (erro: any) {
       res.status(404).json({ message: erro.message });
     }
@@ -68,8 +68,8 @@ export class CursoController {
     }
 
     try {
-      await this.cursoService.alterar(id, req.body);
-      res.status(200).json({ message: 'Curso alterado com sucesso' });
+      await this.alunoService.alterar(id, req.body);
+      res.status(200).json({ message: 'Aluno alterado com sucesso' });
     } catch (erro: any) {
       res.status(500).json({ message: erro.message });
     }
@@ -84,8 +84,8 @@ export class CursoController {
     }
 
     try {
-      await this.cursoService.delete(id);
-      res.status(200).json({ message: 'Curso excluído com sucesso' });
+      await this.alunoService.delete(id);
+      res.status(200).json({ message: 'Aluno excluído com sucesso' });
     } catch (erro: any) {
       res.status(500).json({ message: erro.message });
     }

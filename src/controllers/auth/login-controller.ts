@@ -13,22 +13,22 @@ if (!JWT_SECRET) {
 // Função para login
 export const login = async (req: Request, res: Response) => {
   try {
-    const { emailUsuario, senhaUsuario } = req.body;
+    const { emailAluno, senhaAluno } = req.body;
 
     // Verificar se o usuário existe
-    const user = await AlunoModel.findOne({ where: { emailUsuario } });
+    const user = await AlunoModel.findOne({ where: { emailAluno } });
     if (!user) {
       return res.status(400).json({ message: 'Email inválidos.' });
     }
 
     // Verificar se a senha está correta
-    const isPasswordValid = await bcrypt.compare(senhaUsuario, user.senhaUsuario);
+    const isPasswordValid = await bcrypt.compare(senhaAluno, user.senhaAluno);
     if (!isPasswordValid) {
       return res.status(400).json({ message: 'senha inválidos.' });
     }
 
     // Gerar token JWT
-    const token = jwt.sign({ idUsuario: user.idUsuario }, JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ idAluno: user.idAluno }, JWT_SECRET, { expiresIn: '1h' });
 
     return res.status(200).json({ message: 'Login realizado com sucesso.', token });
   } catch (err) {
