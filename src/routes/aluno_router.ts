@@ -3,6 +3,7 @@ import { AlunoController } from '../controllers/aluno_controller';
 import { authenticateJWT } from '../middleware/auth';
 import { getUserInfo } from '../controllers/auth/getuser';
 import { getCursoInfo } from '../controllers/auth/getcurso';
+import { getBoletosPorCurso } from '../controllers/auth/getboleto';
 
 export class AlunoRouter {
   public readonly router!: Router;
@@ -43,6 +44,10 @@ export class AlunoRouter {
     });
     this.router.get('/curso', (req: Request, res: Response, next:NextFunction) => {
       getCursoInfo(req, res, next);
+    });
+
+    this.router.get('/curso', (req: Request, res: Response, next:NextFunction) => {
+      getBoletosPorCurso(req, res, next);
     });
 
   }

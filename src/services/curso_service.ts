@@ -6,12 +6,12 @@ export class CursoService {
 
     public async criar(novo_item: ICurso) {
         try {
-            const novoCurso = new CursoModel();
-            novoCurso.nomeCurso = novo_item.nomeCurso;
-
-            await CursoModel.create({
-                nomeCurso: novoCurso.nomeCurso,
-            });
+            const novoCurso = await CursoModel.create({
+      nomeCurso: novo_item.nomeCurso,
+      periodoCurso: novo_item.periodoCurso,
+      turnoCurso: novo_item.turnoCurso,
+      statusCurso: novo_item.statusCurso,
+    });
         } catch (erro: any) {
             throw new Error("Erro ao tentar incluir um novo curso [" + erro.message + "]");
         }
