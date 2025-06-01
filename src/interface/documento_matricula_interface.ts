@@ -3,5 +3,5 @@ export interface IDocumentoMatricula {
   idMatricula: number;
   idDocumentoCurso: number;
   statusEntrega: 'Entregue' | 'Pendente';
-  dataEntrega?: Date;
+  dataEntrega: Date;
 }

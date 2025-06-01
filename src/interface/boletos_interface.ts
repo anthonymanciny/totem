@@ -5,5 +5,5 @@ export interface IBoleto {
   valorBoleto: number;
   vencimentoBoleto: Date;
   statusBoleto: 'Pago' | 'Em aberto' | 'Atrasado';
-  linkBoletoPDF?: string;
+  linkBoletoPDF: string | null;
 }

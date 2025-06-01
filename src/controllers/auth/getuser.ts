@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { UsuarioModel } from '../../models/usuario_model';
+import { AlunoModel } from '../../models/aluno_model';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secret_key';
 
@@ -19,7 +19,7 @@ export const getUserInfo = async (req: Request, res: Response, next: NextFunctio
     const idUsuario = decoded.idUsuario;  // Corrigido: agora estamos pegando o `idUsuario` de `decoded`
 
     // Busca o usuário no banco de dados
-    const user = await UsuarioModel.findOne({ where: { idUsuario } });
+    const user = await AlunoModel.findOne({ where: { idUsuario } });
     if (!user) {
     res.status(400).json({ message: 'Usuário não encontrado.' });
     }

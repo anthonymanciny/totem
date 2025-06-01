@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { UsuarioModel } from '../../models/usuario_model';
+import { AlunoModel } from '../../models/aluno_model';
 
 // Variáveis de ambiente
 const JWT_SECRET = process.env.JWT_SECRET;  // Certifique-se de definir esta variável no .env
@@ -16,7 +16,7 @@ export const login = async (req: Request, res: Response) => {
     const { emailUsuario, senhaUsuario } = req.body;
 
     // Verificar se o usuário existe
-    const user = await UsuarioModel.findOne({ where: { emailUsuario } });
+    const user = await AlunoModel.findOne({ where: { emailUsuario } });
     if (!user) {
       return res.status(400).json({ message: 'Email inválidos.' });
     }

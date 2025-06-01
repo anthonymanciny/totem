@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
-import { UsuarioModel } from '../../models/usuario_model';
+import { AlunoModel } from '../../models/aluno_model';
+
 
 // Função para registrar o usuário
 export const register = async (req: Request, res: Response) => {
@@ -8,7 +9,7 @@ export const register = async (req: Request, res: Response) => {
     const { nomeUsuario, emailUsuario, senhaUsuario } = req.body;
 
     // Verificar se o e-mail já está registrado
-    const userExists = await UsuarioModel.findOne({ where: { emailUsuario } });
+    const userExists = await AlunoModel.findOne({ where: { emailUsuario } });
     if (userExists) {
       return res.status(400).json({ message: 'Email já está em uso.' });
     }
@@ -17,7 +18,7 @@ export const register = async (req: Request, res: Response) => {
     const hashedPassword = await bcrypt.hash(senhaUsuario, 10);
 
     // Criando o usuário no banco de dados
-    await UsuarioModel.create({
+    await AlunoModel.create({
       nomeUsuario,
       emailUsuario,
       senhaUsuario: hashedPassword,

@@ -8,11 +8,9 @@ export class CursoService {
         try {
             const novoCurso = new CursoModel();
             novoCurso.nomeCurso = novo_item.nomeCurso;
-            novoCurso.descricaoCurso = novo_item.descricaoCurso;
 
             await CursoModel.create({
                 nomeCurso: novoCurso.nomeCurso,
-                descricaoCurso: novoCurso.descricaoCurso
             });
         } catch (erro: any) {
             throw new Error("Erro ao tentar incluir um novo curso [" + erro.message + "]");
@@ -42,7 +40,6 @@ export class CursoService {
         try {
             const curso = await this.buscar(id);
             curso.nomeCurso = item.nomeCurso;
-            curso.descricaoCurso = item.descricaoCurso;
 
             await curso.save();
         } catch (erro: any) {

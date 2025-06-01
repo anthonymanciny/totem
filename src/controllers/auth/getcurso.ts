@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { UsuarioModel } from '../../models/usuario_model';
-import { MatriculaModel } from '../../models/matricula_model';
+import { AlunoModel } from '../../models/aluno_model';
+import { MatriculaModel } from '../../models/matriculas_model';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secret_key';
 
