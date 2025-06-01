@@ -6,22 +6,24 @@ import { AlunoModel } from '../../models/aluno_model';
 // Função para registrar o usuário
 export const register = async (req: Request, res: Response) => {
   try {
-    const { nomeUsuario, emailUsuario, senhaUsuario } = req.body;
+    const { nomeAluno, emailAluno, senhaAluno,cpfAluno,statusAtivo } = req.body;
 
     // Verificar se o e-mail já está registrado
-    const userExists = await AlunoModel.findOne({ where: { emailUsuario } });
+    const userExists = await AlunoModel.findOne({ where: { emailAluno } });
     if (userExists) {
       return res.status(400).json({ message: 'Email já está em uso.' });
     }
 
     // Criptografando a senha
-    const hashedPassword = await bcrypt.hash(senhaUsuario, 10);
+    const hashedPassword = await bcrypt.hash(senhaAluno, 10);
 
     // Criando o usuário no banco de dados
     await AlunoModel.create({
-      nomeUsuario,
-      emailUsuario,
-      senhaUsuario: hashedPassword,
+      nomeAluno,
+      emailAluno,
+      senhaAluno: hashedPassword,
+      cpfAluno,
+      statusAtivo
     });
 
     return res.status(201).json({ message: 'Usuário registrado com sucesso.' });
