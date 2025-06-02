@@ -4,6 +4,7 @@ import { authenticateJWT } from '../middleware/auth';
 import { getUserInfo } from '../controllers/auth/getuser';
 import { getCursoInfo } from '../controllers/auth/getcurso';
 import { getBoletosPorCurso } from '../controllers/auth/getboleto';
+import { getDocPend } from '../controllers/auth/getdoc_pend';
 
 export class AlunoRouter {
   public readonly router!: Router;
@@ -46,8 +47,12 @@ export class AlunoRouter {
       getCursoInfo(req, res, next);
     });
 
-    this.router.get('/curso', (req: Request, res: Response, next:NextFunction) => {
+    this.router.get('/boleto/:idCurso', (req: Request, res: Response, next:NextFunction) => {
       getBoletosPorCurso(req, res, next);
+    });
+
+    this.router.get('/documentos-pendentes', (req: Request, res: Response, next:NextFunction) => {
+      getDocPend(req, res, next);
     });
 
   }
