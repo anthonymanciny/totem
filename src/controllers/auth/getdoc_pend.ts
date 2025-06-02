@@ -32,7 +32,7 @@ export const getDocPend = async (req: Request, res: Response, next: NextFunction
           attributes: ['nomeDocumento'] // traz só o nome do documento
         }
       ],
-      attributes: ['idDocumentoMatricula', 'statusEntrega', 'dataEntrega'] // campos que quer da tabela DocumentoMatricula
+      attributes: [ 'statusEntrega'] // campos que quer da tabela DocumentoMatricula
     });
 
     if (documentosPendentes.length === 0) {

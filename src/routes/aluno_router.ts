@@ -47,7 +47,7 @@ export class AlunoRouter {
       getCursoInfo(req, res, next);
     });
 
-    this.router.get('/boleto/:idCurso', (req: Request, res: Response, next:NextFunction) => {
+    this.router.get('/boleto/', (req: Request, res: Response, next:NextFunction) => {
       getBoletosPorCurso(req, res, next);
     });
 
