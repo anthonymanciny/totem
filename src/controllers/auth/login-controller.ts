@@ -13,10 +13,10 @@ if (!JWT_SECRET) {
 // Função para login
 export const login = async (req: Request, res: Response) => {
   try {
-    const { emailAluno, senhaAluno } = req.body;
+    const { cpfAluno, senhaAluno } = req.body;
 
     // Verificar se o usuário existe
-    const user = await AlunoModel.findOne({ where: { emailAluno } });
+    const user = await AlunoModel.findOne({ where: { cpfAluno } });
     if (!user) {
       return res.status(400).json({ message: 'Email inválidos.' });
     }
