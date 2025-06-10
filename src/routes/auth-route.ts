@@ -1,6 +1,8 @@
 import express, { Router, Request, Response } from 'express';
-import { register } from '../controllers/auth/registre-controller';
-import { login } from '../controllers/auth/login-controller';
+import { registro } from '../controllers/registro_controller';
+
+import { login } from '../controllers/login_controller';
+// import { login } from '../controllers/auth/login-controller';
 import {authenticateJWT}  from '../middleware/auth';
 
 export class AuthRouter {
@@ -10,8 +12,8 @@ export class AuthRouter {
         this.router = express.Router();
 
         // Rota de registro
-        this.router.post('/register', (req, res) => {
-            register(req, res);
+        this.router.post('/registro', (req, res) => {
+            registro(req, res);
         });
 
         // Rota de login
