@@ -5,6 +5,7 @@ import { getUserInfo } from '../controllers/auth/getuser';
 import { getCursoInfo } from '../controllers/auth/getcurso';
 import { getBoletosPorCurso } from '../controllers/auth/getboleto';
 import { getDocPend } from '../controllers/auth/getdoc_pend';
+import { getBoletosPago } from '../controllers/auth/getboletopg';
 
 export class AlunoRouter {
   public readonly router!: Router;
@@ -49,6 +50,9 @@ export class AlunoRouter {
 
     this.router.get('/boleto/', (req: Request, res: Response, next:NextFunction) => {
       getBoletosPorCurso(req, res, next);
+    });
+    this.router.get('/boletopg', (req: Request, res: Response, next:NextFunction) => {
+      getBoletosPago(req, res, next);
     });
 
     this.router.get('/documentos-pendentes', (req: Request, res: Response, next:NextFunction) => {
