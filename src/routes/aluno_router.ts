@@ -3,7 +3,7 @@ import { AlunoController } from '../controllers/aluno_controller';
 import { authenticateJWT } from '../middleware/auth';
 import { getUserInfo } from '../controllers/getuser_controller';
 import { getDocPend } from '../controllers/documento_pendente_controller';
-import { getCursoInfo } from '../controllers/auth/getcurso';
+import { getCursoInfo } from '../controllers/getcurso_controller';
 import { getBoletosPorCurso } from '../controllers/auth/getboleto';
 import { getBoletosPago } from '../controllers/auth/getboletopg';
 
