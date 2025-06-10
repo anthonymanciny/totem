@@ -1,10 +1,10 @@
 import express, { Router, Request, Response, NextFunction } from 'express';
 import { AlunoController } from '../controllers/aluno_controller';
 import { authenticateJWT } from '../middleware/auth';
-import { getUserInfo } from '../controllers/auth/getuser';
+import { getUserInfo } from '../controllers/getuser_controller';
+import { getDocPend } from '../controllers/documento_pendente_controller';
 import { getCursoInfo } from '../controllers/auth/getcurso';
 import { getBoletosPorCurso } from '../controllers/auth/getboleto';
-import { getDocPend } from '../controllers/auth/getdoc_pend';
 import { getBoletosPago } from '../controllers/auth/getboletopg';
 
 export class AlunoRouter {
@@ -42,7 +42,7 @@ export class AlunoRouter {
     });
 
     this.router.get('/user', (req: Request, res: Response, next:NextFunction) => {
-      getUserInfo(req, res, next);
+      getUserInfo(req, res);
     });
     this.router.get('/curso', (req: Request, res: Response, next:NextFunction) => {
       getCursoInfo(req, res, next);
@@ -56,7 +56,7 @@ export class AlunoRouter {
     });
 
     this.router.get('/documentos-pendentes', (req: Request, res: Response, next:NextFunction) => {
-      getDocPend(req, res, next);
+      getDocPend(req, res);
     });
 
   }
