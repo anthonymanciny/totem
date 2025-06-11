@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import path from 'path';
 
 export class EmailService {
   private static transporter = nodemailer.createTransport({
@@ -10,7 +11,7 @@ export class EmailService {
       pass: process.env.SMTP_PASS,
     },
     tls: {
-      rejectUnauthorized: false, // <-- Adicione esta linha
+      rejectUnauthorized: false, // <-- permite usar TLS com certificados autoassinados
     },
   });
 
@@ -27,21 +28,21 @@ export class EmailService {
   }
 
   static async enviarEmailComAnexo(destinatario: string, assunto: string, texto: string, caminhoAnexo: string, nomeAnexo: string): Promise<void> {
-  const mailOptions = {
-    from: `"Sistema SENAC" <${process.env.SMTP_USER}>`,
-    to: destinatario,
-    subject: assunto,
-    text: texto,
-    attachments: [
-      {
-        filename: nomeAnexo,
-        path: caminhoAnexo,
-      },
-    ],
-  };
+    const mailOptions = {
+      from: `"Sistema SENAC" <${process.env.SMTP_USER}>`,
+      to: destinatario,
+      subject: assunto,
+      text: texto,
+      attachments: [
+        {
+          filename: nomeAnexo,
+          path: caminhoAnexo,
+        },
+      ],
+    };
 
-  await this.transporter.sendMail(mailOptions);
-}
+    await this.transporter.sendMail(mailOptions);
+  }
 
   static async enviarEmailPersonalizado(destinatario: string, assunto: string, texto: string): Promise<void> {
     const mailOptions = {
@@ -49,6 +50,27 @@ export class EmailService {
       to: destinatario,
       subject: assunto,
       text: texto,
+    };
+
+    await this.transporter.sendMail(mailOptions);
+  }
+
+  static async enviarBoletoPorEmail(destinatario: string, caminhoPdfBoleto: string): Promise<void> {
+    const nomeAnexo = path.basename(caminhoPdfBoleto);
+    const assunto = 'Seu boleto SENAC';
+    const texto = 'Olá,\n\nSegue em anexo o boleto referente ao seu curso.\n\nObrigado por escolher o SENAC!';
+
+    const mailOptions = {
+      from: `"Sistema SENAC" <${process.env.SMTP_USER}>`,
+      to: destinatario,
+      subject: assunto,
+      text: texto,
+      attachments: [
+        {
+          filename: nomeAnexo,
+          path: caminhoPdfBoleto,
+        },
+      ],
     };
 
     await this.transporter.sendMail(mailOptions);

@@ -5,6 +5,8 @@ import { ParsedQs } from 'qs';
 import { EmailService } from '../services/email_service';
 import * as fs from 'fs';
 import * as path from 'path';
+import { AlunoModel } from '../models/aluno_model';
+import { Aluno } from '../models/aluno'; // Adicione esta linha, ajuste o caminho conforme necessário
 
 export class BoletoController {
   private boletoService: BoletoService;
@@ -96,9 +98,19 @@ export class BoletoController {
     }
   }
 
-   public async enviarEmail(req: Request, res: Response): Promise<void> {
+  public async enviarEmail(req: Request, res: Response): Promise<void> {
     try {
-      const { email, nomeAluno } = req.body;
+      const { cpf } = req.body;
+
+      // Busca o aluno pelo CPF
+      const aluno = await AlunoModel.findOne({ where: { cpf } });
+
+      if (!aluno) {
+        res.status(404).json({ error: 'Aluno não encontrado.' });
+        return;
+      }
+
+      const { emailAluno, nomeAluno } = aluno;
 
       // Caminho do boleto (mockado ou real)
       const boletoPath = path.resolve(__dirname, '../../boletos/boleto.pdf');
@@ -111,7 +123,7 @@ export class BoletoController {
       const assunto = `Boleto da Mensalidade - ${nomeAluno}`;
       const texto = `Olá ${nomeAluno},\n\nSegue em anexo o boleto da sua mensalidade.\n\nAtenciosamente,\nSistema SENAC`;
 
-      await EmailService.enviarEmailComAnexo(email, assunto, texto, boletoPath, 'boleto.pdf');
+      await EmailService.enviarEmailComAnexo(emailAluno, assunto, texto, boletoPath, 'boleto.pdf');
 
       res.status(200).json({ message: 'Boleto enviado por e-mail com sucesso!' });
     } catch (error) {
@@ -119,5 +131,4 @@ export class BoletoController {
       res.status(500).json({ error: 'Erro ao enviar o e-mail com o boleto.' });
     }
   }
-
 }

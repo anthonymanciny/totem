@@ -1,24 +1,24 @@
 import { BoletoModel } from '../models/boletos_model';
 import { IBoleto } from '../interface/boletos_interface';
+import { gerarBoleto } from './gerarboleto_service';
 
 export class BoletoService {
     enviarBoletoPorEmail: any;
     constructor() {}
 
-    public async criar(novo_item: IBoleto): Promise<void> {
-        try {
-            await BoletoModel.create({
-                idAluno: novo_item.idAluno,
-                idCurso: novo_item.idCurso,
-                valorBoleto: novo_item.valorBoleto,
-                vencimentoBoleto: novo_item.vencimentoBoleto,
-                statusBoleto: novo_item.statusBoleto,
-                linkBoletoPDF: novo_item.linkBoletoPDF
-            });
-        } catch (erro: any) {
-            throw new Error(`Erro ao tentar incluir um novo boleto [${erro.message}]`);
-        }
-    }
+public async criar(novo_item: IBoleto): Promise<void> {
+  try {
+    // Usa a função centralizada para gerar o boleto completo
+    await gerarBoleto({
+      idAluno: novo_item.idAluno,
+      idCurso: novo_item.idCurso,
+      valorBoleto: novo_item.valorBoleto,
+      vencimentoBoleto: novo_item.vencimentoBoleto,
+    });
+  } catch (erro: any) {
+    throw new Error(`Erro ao tentar incluir um novo boleto [${erro.message}]`);
+  }
+}
 
     public async listar(): Promise<BoletoModel[]> {
         try {
@@ -62,3 +62,5 @@ export class BoletoService {
         }
     }
 }
+
+

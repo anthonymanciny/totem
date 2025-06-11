@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import router from './routes/totem_router';
 import sequelize from './database/sequelize';
+import path from 'path';
 
 import qrCodeRoutes from './routes/qrcode_router';
 
@@ -16,6 +17,7 @@ app.get('/', (req: Request, res: Response) => {
 // Usando as rotas do módulo
 app.use(router);
 app.use(qrCodeRoutes);
+app.use('/boletos', express.static(path.resolve(__dirname, '../boletos')));
 
 // Função de inicialização que conecta ao banco e sobe o servidor
 async function initialize() {
