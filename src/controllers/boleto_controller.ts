@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { BoletoService } from '../services/boleto_service';
+import { ParamsDictionary } from 'express-serve-static-core';
+import { ParsedQs } from 'qs';
 
 export class BoletoController {
   private boletoService: BoletoService;
@@ -89,5 +91,11 @@ export class BoletoController {
     } catch (erro: any) {
       res.status(500).json({ message: erro.message });
     }
+  }
+
+  public async enviarEmail(req: Request, res: Response): Promise<void> {
+    // Implemente aqui a lógica para enviar o boleto por e-mail
+    // Exemplo de resposta simples:
+    res.status(200).json({ message: 'Boleto enviado por e-mail com sucesso!' });
   }
 }

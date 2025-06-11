@@ -2,6 +2,7 @@ import { BoletoModel } from '../models/boletos_model';
 import { IBoleto } from '../interface/boletos_interface';
 
 export class BoletoService {
+    enviarBoletoPorEmail: any;
     constructor() {}
 
     public async criar(novo_item: IBoleto): Promise<void> {

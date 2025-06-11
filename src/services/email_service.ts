@@ -25,4 +25,15 @@ export class EmailService {
 
     await this.transporter.sendMail(mailOptions);
   }
+
+  static async enviarEmailPersonalizado(destinatario: string, assunto: string, texto: string): Promise<void> {
+    const mailOptions = {
+      from: `"Sistema SENAC" <${process.env.SMTP_USER}>`,
+      to: destinatario,
+      subject: assunto,
+      text: texto,
+    };
+
+    await this.transporter.sendMail(mailOptions);
+  }
 }
