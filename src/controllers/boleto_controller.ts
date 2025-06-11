@@ -2,6 +2,9 @@ import { Request, Response } from 'express';
 import { BoletoService } from '../services/boleto_service';
 import { ParamsDictionary } from 'express-serve-static-core';
 import { ParsedQs } from 'qs';
+import { EmailService } from '../services/email_service';
+import * as fs from 'fs';
+import * as path from 'path';
 
 export class BoletoController {
   private boletoService: BoletoService;
@@ -93,9 +96,28 @@ export class BoletoController {
     }
   }
 
-  public async enviarEmail(req: Request, res: Response): Promise<void> {
-    // Implemente aqui a lógica para enviar o boleto por e-mail
-    // Exemplo de resposta simples:
-    res.status(200).json({ message: 'Boleto enviado por e-mail com sucesso!' });
+   public async enviarEmail(req: Request, res: Response): Promise<void> {
+    try {
+      const { email, nomeAluno } = req.body;
+
+      // Caminho do boleto (mockado ou real)
+      const boletoPath = path.resolve(__dirname, '../../boletos/boleto.pdf');
+
+      if (!fs.existsSync(boletoPath)) {
+        res.status(404).json({ error: 'Boleto não encontrado.' });
+        return;
+      }
+
+      const assunto = `Boleto da Mensalidade - ${nomeAluno}`;
+      const texto = `Olá ${nomeAluno},\n\nSegue em anexo o boleto da sua mensalidade.\n\nAtenciosamente,\nSistema SENAC`;
+
+      await EmailService.enviarEmailComAnexo(email, assunto, texto, boletoPath, 'boleto.pdf');
+
+      res.status(200).json({ message: 'Boleto enviado por e-mail com sucesso!' });
+    } catch (error) {
+      console.error('Erro ao enviar e-mail:', error);
+      res.status(500).json({ error: 'Erro ao enviar o e-mail com o boleto.' });
+    }
   }
+
 }

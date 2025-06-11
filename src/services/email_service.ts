@@ -26,6 +26,23 @@ export class EmailService {
     await this.transporter.sendMail(mailOptions);
   }
 
+  static async enviarEmailComAnexo(destinatario: string, assunto: string, texto: string, caminhoAnexo: string, nomeAnexo: string): Promise<void> {
+  const mailOptions = {
+    from: `"Sistema SENAC" <${process.env.SMTP_USER}>`,
+    to: destinatario,
+    subject: assunto,
+    text: texto,
+    attachments: [
+      {
+        filename: nomeAnexo,
+        path: caminhoAnexo,
+      },
+    ],
+  };
+
+  await this.transporter.sendMail(mailOptions);
+}
+
   static async enviarEmailPersonalizado(destinatario: string, assunto: string, texto: string): Promise<void> {
     const mailOptions = {
       from: `"Sistema SENAC" <${process.env.SMTP_USER}>`,
