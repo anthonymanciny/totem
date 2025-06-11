@@ -1,20 +1,32 @@
-// // send.ts (salve na raiz do projeto)
-// import { sendMail } from './mailer';
+// src/send.ts
+import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
 
-// async function main() {
-//   const destinatario = 'seuemaildestino@gmail.com'; // substitua por um e-mail válido
-//   const assunto = 'Teste de envio de e-mail';
-//   const conteudoHtml = `
-//     <h1>Funcionou!</h1>
-//     <p>Este é um teste de envio de e-mail com Nodemailer.</p>
-//   `;
+dotenv.config();
 
-//   try {
-//     await sendMail(destinatario, assunto, conteudoHtml);
-//     console.log('✅ E-mail de teste enviado com sucesso.');
-//   } catch (err) {
-//     console.error('❌ Falha no envio de e-mail:', err);
-//   }
-// }
+export const sendEmail = async (to: string, subject: string, html: string): Promise<boolean> => {
+  try {
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
 
-// main();
+    await transporter.sendMail({
+      from: `"Boleto" <${process.env.EMAIL_USER}>`,
+      to,
+      subject,
+      html,
+    });
+
+    console.log('E-mail enviado com sucesso!');
+    return true;
+  } catch (error) {
+    console.error('Erro ao enviar e-mail:', error);
+    return false;
+  }
+};

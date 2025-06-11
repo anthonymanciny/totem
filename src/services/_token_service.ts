@@ -1,30 +1,42 @@
-// import crypto from "crypto";
+// src/service.ts
+import { TokenData,tokens,users } from '../utils/storage';
+import { sendEmail } from '../utils/send';
+import { generateToken } from '../utils/tokengenerator';
 
-// // Armazenamento temporário em memória (substitua por Redis em produção)
-// const tokenStore = new Map<string, { token: string; expiresAt: number }>();
+export const generateAndSendToken = async (cpf: string): Promise<{ success: boolean; message?: string }> => {
+  const user = users[cpf];
+  if (!user) return { success: false, message: 'CPF não encontrado.' };
 
-// export function generateTokenForAluno(cpf: string): string {
-//   const token = crypto.randomInt(100000, 999999).toString();
-//   const expiresAt = Date.now() + 5 * 60 * 1000; // 5 minutos
+  const token = generateToken();
+  const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutos
 
-//   tokenStore.set(cpf, { token, expiresAt });
+  tokens[cpf] = { token, expiresAt };
 
-//   return token;
-// }
+  const emailContent = `
+    <p>Olá,</p>
+    <p>Seu código de verificação para login é: <strong>${token}</strong></p>
+    <p>Este código é válido por 5 minutos.</p>
+  `;
 
-// export function validateTokenForAluno(cpf: string, inputToken: string): boolean {
-//   const entry = tokenStore.get(cpf);
-//   if (!entry) return false;
+  const emailSent = await sendEmail(user.email, 'Seu Código de Verificação de Login', emailContent);
 
-//   const { token, expiresAt } = entry;
+  return emailSent ? { success: true } : { success: false, message: 'Erro ao enviar o e-mail.' };
+};
 
-//   if (Date.now() > expiresAt) {
-//     tokenStore.delete(cpf);
-//     return false;
-//   }
+export const verifyToken = (cpf: string, token: string): { success: boolean; message?: string } => {
+  const storedTokenData: TokenData | undefined = tokens[cpf];
 
-//   const isValid = token === inputToken;
-//   if (isValid) tokenStore.delete(cpf);
+  if (!storedTokenData) {
+    return { success: false, message: 'Token não solicitado ou expirado para este CPF.' };
+  }
 
-//   return isValid;
-// }
+  if (storedTokenData.token === token && storedTokenData.expiresAt > new Date()) {
+    delete tokens[cpf];
+    return { success: true };
+  } else if (storedTokenData.expiresAt <= new Date()) {
+    delete tokens[cpf];
+    return { success: false, message: 'Token expirado. Por favor, solicite um novo código.' };
+  } else {
+    return { success: false, message: 'Código de verificação inválido.' };
+  }
+};
